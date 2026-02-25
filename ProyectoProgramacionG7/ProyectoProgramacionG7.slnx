@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="Modelos/Modelos.csproj" />
   <Project Path="ProyectoProgramacionG7/ProyectoProgramacionG7.csproj" />
 </Solution>

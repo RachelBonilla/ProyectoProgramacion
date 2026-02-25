@@ -1,7 +1,29 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using ProyectoProgramacionG7.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
+
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//{
+//    options.UseMySql(
+//        builder.Configuration.GetConnectionString("MysqlConnection"),
+//        ServerVersion.AutoDetect(
+//            builder.Configuration.GetConnectionString("MysqlConnection")
+//        )
+//    );
+//});
+
+
+
+//Repositorio
+//CapaBussine
+
 
 var app = builder.Build();
 
@@ -14,16 +36,14 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+
 app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapStaticAssets();
-
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
-
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
