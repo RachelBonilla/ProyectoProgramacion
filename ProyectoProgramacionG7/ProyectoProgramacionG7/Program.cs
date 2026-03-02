@@ -9,15 +9,15 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
 
-//builder.Services.AddDbContext<AppDbContext>(options =>
-//{
-//    options.UseMySql(
-//        builder.Configuration.GetConnectionString("MysqlConnection"),
-//        ServerVersion.AutoDetect(
-//            builder.Configuration.GetConnectionString("MysqlConnection")
-//        )
-//    );
-//});
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("MysqlConnection"),
+        ServerVersion.AutoDetect(
+            builder.Configuration.GetConnectionString("MysqlConnection")
+        )
+    );
+});
 
 
 

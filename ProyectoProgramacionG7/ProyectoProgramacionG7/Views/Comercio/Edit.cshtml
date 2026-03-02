@@ -1,5 +1,36 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model Modelos.Models.Comercio
+
+<h2>Editar Comercio</h2>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="IdComercio" />
+
+    <label>Nombre</label><br />
+    <input asp-for="Nombre" /><br />
+
+    <label>Tipo de Comercio</label><br />
+    <select asp-for="TipoDeComercio">
+        <option value="1">Restaurantes</option>
+        <option value="2">Supermercados</option>
+        <option value="3">Ferreterías</option>
+        <option value="4">Otros</option>
+    </select><br />
+
+    <label>Teléfono</label><br />
+    <input asp-for="Telefono" /><br />
+
+    <label>Correo</label><br />
+    <input asp-for="CorreoElectronico" /><br />
+
+    <label>Dirección</label><br />
+    <input asp-for="Direccion" /><br />
+
+    <label>Estado</label><br />
+    <select asp-for="Estado">
+        <option value="true">Activo</option>
+        <option value="false">Inactivo</option>
+    </select><br /><br />
+
+    <button type="submit">Actualizar</button>
+    <a asp-action="Index">Volver</a>
+</form>

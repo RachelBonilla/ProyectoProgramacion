@@ -1,5 +1,21 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model Modelos.Models.Comercio
+
+<h2>Detalle del Comercio</h2>
+
+<p><b>Identificación:</b> @Model.Identificacion</p>
+<p><b>Tipo ID:</b> @(Model.TipoIdentificacion == 1 ? "Física" : "Jurídica")</p>
+<p><b>Nombre:</b> @Model.Nombre</p>
+<p>
+    <b>Tipo Comercio:</b>
+    @(Model.TipoDeComercio == 1 ? "Restaurantes" :
+      Model.TipoDeComercio == 2 ? "Supermercados" :
+      Model.TipoDeComercio == 3 ? "Ferreterías" : "Otros")
+</p>
+<p><b>Teléfono:</b> @Model.Telefono</p>
+<p><b>Correo:</b> @Model.CorreoElectronico</p>
+<p><b>Dirección:</b> @Model.Direccion</p>
+<p><b>Fecha Registro:</b> @Model.FechaDeRegistro</p>
+<p><b>Fecha Modificación:</b> @Model.FechaDeModificacion</p>
+<p><b>Estado:</b> @(Model.Estado ? "Activo" : "Inactivo")</p>
+
+<a asp-action="Index">Volver</a>
