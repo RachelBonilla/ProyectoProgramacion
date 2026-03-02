@@ -15,6 +15,7 @@ namespace ProyectoProgramacionG7.Data
         }
 
         // Tablas del comercio
+        public DbSet<Caja> Cajas { get; set; }
         public DbSet<Comercio> Comercios { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

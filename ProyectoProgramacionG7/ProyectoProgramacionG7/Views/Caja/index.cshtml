@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Modelos.Models.Caja>
+
+<h2>Cajas</h2>
+
+<a class="btn btn-primary" href="/Cajas/Create">Nueva Caja</a>
+
+<table class="table table-striped mt-3">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Código</th>
+            <th>Comercio</th>
+            <th>Estado</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Nombre</td>
+                <td>@item.Codigo</td>
+                <td>@item.Comercio?.Nombre</td>
+                <td>@(item.Estado ? "Activa" : "Inactiva")</td>
+                <td>
+                    <a href="/Cajas/Edit/@item.IdCaja">Editar</a> |
+                    <a href="/Cajas/Delete/@item.IdCaja">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
