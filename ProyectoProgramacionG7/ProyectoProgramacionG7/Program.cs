@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ProyectoProgramacionG7.Data;
+using ProyectoProgramacionG7.Services;
+//using ProyectoProgramacionG7.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,12 +13,9 @@ builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseMySql(
-        builder.Configuration.GetConnectionString("MysqlConnection"),
-        ServerVersion.AutoDetect(
-            builder.Configuration.GetConnectionString("MysqlConnection")
-        )
-    );
+    options.UseMySQL(
+    builder.Configuration.GetConnectionString("MysqlConnection")
+);
 });
 
 
@@ -24,16 +23,21 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 //Repositorio
 //CapaBussine
 
-
+builder.Services.AddScoped<IBitacoraService, BitacoraService>();
+builder.Services.AddScoped<ISinpeService, SinpeService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+app.UseDeveloperExceptionPage();
 }
+else
+{
+app.UseExceptionHandler("/Home/Error");
+app.UseHsts();
+}
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

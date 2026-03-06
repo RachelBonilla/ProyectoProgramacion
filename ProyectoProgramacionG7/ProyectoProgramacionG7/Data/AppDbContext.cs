@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Modelos.Models;
-using ProyectoProgramacionG7.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ProyectoProgramacionG7.Data
@@ -14,16 +13,14 @@ namespace ProyectoProgramacionG7.Data
         {
         }
 
-        // Tablas del comercio
         public DbSet<Caja> Cajas { get; set; }
         public DbSet<Comercio> Comercios { get; set; }
+        public DbSet<Sinpe> Sinpes { get; set; }
+        public DbSet<BitacoraEvento> BitacoraEventos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-        
-           
         }
     }
 }
-

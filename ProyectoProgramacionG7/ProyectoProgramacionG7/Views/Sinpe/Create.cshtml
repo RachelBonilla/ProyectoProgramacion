@@ -1,0 +1,84 @@
+﻿@model Modelos.Models.Sinpe
+
+@{
+    ViewData["Title"] = "Registrar Pago SINPE";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Registrar Pago SINPE</h2>
+
+    @if (TempData["Exito"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Exito"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form asp-action="Create" method="post">
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="TelefonoOrigen" class="form-label"></label>
+                        <input asp-for="TelefonoOrigen" class="form-control" placeholder="Ej: 88889999" maxlength="10" />
+                        <span asp-validation-for="TelefonoOrigen" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="NombreOrigen" class="form-label"></label>
+                        <input asp-for="NombreOrigen" class="form-control" placeholder="Nombre completo del remitente" />
+                        <span asp-validation-for="NombreOrigen" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="TelefonoDestinatario" class="form-label"></label>
+                        <input asp-for="TelefonoDestinatario" class="form-control" placeholder="Ej: 77778888" maxlength="10" />
+                        <span asp-validation-for="TelefonoDestinatario" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="NombreDestinatario" class="form-label"></label>
+                        <input asp-for="NombreDestinatario" class="form-control" placeholder="Nombre completo del destinatario" />
+                        <span asp-validation-for="NombreDestinatario" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Monto" class="form-label"></label>
+                        <div class="input-group">
+                            <span class="input-group-text">₡</span>
+                            <input asp-for="Monto" class="form-control" placeholder="0.00" step="0.01" />
+                        </div>
+                        <span asp-validation-for="Monto" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Descripcion" class="form-label"></label>
+                        <input asp-for="Descripcion" class="form-control" placeholder="Opcional" maxlength="50" />
+                        <span asp-validation-for="Descripcion" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2 mt-2">
+                    <button type="submit" class="btn btn-success">Registrar Pago</button>
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
