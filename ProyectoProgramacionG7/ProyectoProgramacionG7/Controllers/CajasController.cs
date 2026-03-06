@@ -2,16 +2,20 @@
 using Microsoft.EntityFrameworkCore;
 using ProyectoProgramacionG7.Data;
 using Modelos.Models;
+using ProyectoProgramacionG7.Services;
+using System.Text.Json;
 
 namespace ProyectoProgramacionG7.Controllers
 {
     public class CajasController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly IBitacoraService _bitacora;
 
-        public CajasController(AppDbContext context)
+        public CajasController(AppDbContext context, IBitacoraService bitacora)
         {
             _context = context;
+            _bitacora = bitacora;
         }
 
         // GET: Cajas
@@ -36,15 +40,40 @@ namespace ProyectoProgramacionG7.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Caja caja)
         {
-            if (ModelState.IsValid)
+            try
             {
-                caja.FechaDeRegistro = DateTime.Now;
-                caja.Estado = true;
+                if (ModelState.IsValid)
+                {
+                    caja.FechaDeRegistro = DateTime.Now;
+                    caja.Estado = true;
 
-                _context.Add(caja);
-                await _context.SaveChangesAsync();
+                    _context.Add(caja);
+                    await _context.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Index));
+                    var datos = JsonSerializer.Serialize(caja);
+
+                    await _bitacora.RegistrarEvento(
+                        "Cajas",
+                        "Registrar",
+                        "Se registró una nueva caja",
+                        "",
+                        datos,
+                        null
+                    );
+
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (Exception ex)
+            {
+                await _bitacora.RegistrarEvento(
+                    "Cajas",
+                    "Error",
+                    ex.Message,
+                    ex.StackTrace,
+                    null,
+                    null
+                );
             }
 
             ViewBag.Comercios = _context.Comercios.ToList();
@@ -74,14 +103,45 @@ namespace ProyectoProgramacionG7.Controllers
             if (id != caja.IdCaja)
                 return NotFound();
 
-            if (ModelState.IsValid)
+            try
             {
-                caja.FechaDeModificacion = DateTime.Now;
+                if (ModelState.IsValid)
+                {
+                    var cajaAnterior = await _context.Cajas
+                        .AsNoTracking()
+                        .FirstOrDefaultAsync(c => c.IdCaja == id);
 
-                _context.Update(caja);
-                await _context.SaveChangesAsync();
+                    var datosAnteriores = JsonSerializer.Serialize(cajaAnterior);
 
-                return RedirectToAction(nameof(Index));
+                    caja.FechaDeModificacion = DateTime.Now;
+
+                    _context.Update(caja);
+                    await _context.SaveChangesAsync();
+
+                    var datosPosteriores = JsonSerializer.Serialize(caja);
+
+                    await _bitacora.RegistrarEvento(
+                        "Cajas",
+                        "Editar",
+                        "Se editó una caja",
+                        "",
+                        datosAnteriores,
+                        datosPosteriores
+                    );
+
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (Exception ex)
+            {
+                await _bitacora.RegistrarEvento(
+                    "Cajas",
+                    "Error",
+                    ex.Message,
+                    ex.StackTrace,
+                    null,
+                    null
+                );
             }
 
             ViewBag.Comercios = _context.Comercios.ToList();
@@ -109,15 +169,42 @@ namespace ProyectoProgramacionG7.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var caja = await _context.Cajas.FindAsync(id);
+            try
+            {
+                var caja = await _context.Cajas.FindAsync(id);
 
-            if (caja == null)
-                return NotFound();
+                if (caja == null)
+                    return NotFound();
 
-            _context.Cajas.Remove(caja);
-            await _context.SaveChangesAsync();
+                var datosAnteriores = JsonSerializer.Serialize(caja);
 
-            return RedirectToAction(nameof(Index));
+                _context.Cajas.Remove(caja);
+                await _context.SaveChangesAsync();
+
+                await _bitacora.RegistrarEvento(
+                    "Cajas",
+                    "Eliminar",
+                    "Se eliminó una caja",
+                    "",
+                    datosAnteriores,
+                    null
+                );
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                await _bitacora.RegistrarEvento(
+                    "Cajas",
+                    "Error",
+                    ex.Message,
+                    ex.StackTrace,
+                    null,
+                    null
+                );
+
+                return RedirectToAction(nameof(Index));
+            }
         }
     }
 }

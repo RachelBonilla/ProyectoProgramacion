@@ -14,15 +14,14 @@ namespace ProyectoProgramacionG7.Data
         {
         }
 
-        // Tablas del comercio
+        // Tablas
         public DbSet<Caja> Cajas { get; set; }
         public DbSet<Comercio> Comercios { get; set; }
+        public DbSet<BitacoraEvento> BitacoraEventos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-        
-           
         }
     }
 }

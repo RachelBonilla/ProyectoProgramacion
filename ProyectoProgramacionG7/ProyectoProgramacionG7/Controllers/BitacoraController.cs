@@ -1,12 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ProyectoProgramacionG7.Data;
 
 namespace ProyectoProgramacionG7.Controllers
 {
     public class BitacoraController : Controller
     {
-        public IActionResult Index()
+        private readonly AppDbContext _context;
+
+        public BitacoraController(AppDbContext context)
         {
-            return View();
+            _context = context;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var eventos = await _context.BitacoraEventos
+                .OrderByDescending(b => b.FechaDeEvento)
+                .ToListAsync();
+
+            return View(eventos);
         }
     }
 }

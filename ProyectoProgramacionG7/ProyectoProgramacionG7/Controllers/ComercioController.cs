@@ -2,16 +2,20 @@
 using Microsoft.EntityFrameworkCore;
 using ProyectoProgramacionG7.Data;
 using Modelos.Models;
+using ProyectoProgramacionG7.Services;
+using System.Text.Json;
 
 namespace ProyectoProgramacionG7.Controllers
 {
     public class ComercioController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly IBitacoraService _bitacora;
 
-        public ComercioController(AppDbContext context)
+        public ComercioController(AppDbContext context, IBitacoraService bitacora)
         {
             _context = context;
+            _bitacora = bitacora;
         }
 
         // LISTAR
@@ -46,25 +50,49 @@ namespace ProyectoProgramacionG7.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Comercio comercio)
         {
-            // Validar identificación única
-            bool existe = await _context.Comercios
-                .AnyAsync(c => c.Identificacion == comercio.Identificacion);
-
-            if (existe)
+            try
             {
-                ModelState.AddModelError("Identificacion", "Ya existe un comercio con esta identificación.");
-                return View(comercio);
+                bool existe = await _context.Comercios
+                    .AnyAsync(c => c.Identificacion == comercio.Identificacion);
+
+                if (existe)
+                {
+                    ModelState.AddModelError("Identificacion", "Ya existe un comercio con esta identificación.");
+                    return View(comercio);
+                }
+
+                if (ModelState.IsValid)
+                {
+                    comercio.FechaDeRegistro = DateTime.Now;
+                    comercio.Estado = true;
+
+                    _context.Comercios.Add(comercio);
+                    await _context.SaveChangesAsync();
+
+                    var datos = JsonSerializer.Serialize(comercio);
+
+                    await _bitacora.RegistrarEvento(
+                        "Comercios",
+                        "Registrar",
+                        "Se registró un comercio",
+                        "",
+                        datos,
+                        null
+                    );
+
+                    return RedirectToAction(nameof(Index));
+                }
             }
-
-            if (ModelState.IsValid)
+            catch (Exception ex)
             {
-                comercio.FechaDeRegistro = DateTime.Now;
-                comercio.Estado = true;
-
-                _context.Comercios.Add(comercio);
-                await _context.SaveChangesAsync();
-
-                return RedirectToAction(nameof(Index));
+                await _bitacora.RegistrarEvento(
+                    "Comercios",
+                    "Error",
+                    ex.Message,
+                    ex.StackTrace,
+                    null,
+                    null
+                );
             }
 
             return View(comercio);
@@ -92,14 +120,45 @@ namespace ProyectoProgramacionG7.Controllers
             if (id != comercio.IdComercio)
                 return NotFound();
 
-            if (ModelState.IsValid)
+            try
             {
-                comercio.FechaDeModificacion = DateTime.Now;
+                if (ModelState.IsValid)
+                {
+                    var comercioAnterior = await _context.Comercios
+                        .AsNoTracking()
+                        .FirstOrDefaultAsync(c => c.IdComercio == id);
 
-                _context.Comercios.Update(comercio);
-                await _context.SaveChangesAsync();
+                    var datosAnteriores = JsonSerializer.Serialize(comercioAnterior);
 
-                return RedirectToAction(nameof(Index));
+                    comercio.FechaDeModificacion = DateTime.Now;
+
+                    _context.Comercios.Update(comercio);
+                    await _context.SaveChangesAsync();
+
+                    var datosPosteriores = JsonSerializer.Serialize(comercio);
+
+                    await _bitacora.RegistrarEvento(
+                        "Comercios",
+                        "Editar",
+                        "Se editó un comercio",
+                        "",
+                        datosAnteriores,
+                        datosPosteriores
+                    );
+
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (Exception ex)
+            {
+                await _bitacora.RegistrarEvento(
+                    "Comercios",
+                    "Error",
+                    ex.Message,
+                    ex.StackTrace,
+                    null,
+                    null
+                );
             }
 
             return View(comercio);
