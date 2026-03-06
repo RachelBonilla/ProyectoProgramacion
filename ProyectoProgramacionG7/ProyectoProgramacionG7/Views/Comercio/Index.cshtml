@@ -1,42 +1,57 @@
 ﻿@model IEnumerable<Modelos.Models.Comercio>
 
-<h2>Listado de Comercios</h2>
+<h2>Comercios</h2>
 
-<p>
-    <a asp-action="Create">Registrar Comercio</a>
-</p>
+<a class="btn btn-primary" asp-action="Create">Registrar Comercio</a>
 
-<table border="1" cellpadding="5">
-    <tr>
-        <th>Identificación</th>
-        <th>Tipo ID</th>
-        <th>Nombre</th>
-        <th>Tipo Comercio</th>
-        <th>Teléfono</th>
-        <th>Correo</th>
-        <th>Estado</th>
-        <th>Acciones</th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+<table class="table table-striped mt-3">
+    <thead>
         <tr>
-            <td>@item.Identificacion</td>
-            <td>@(item.TipoIdentificacion == 1 ? "Física" : "Jurídica")</td>
-            <td>@item.Nombre</td>
-            <td>
-                @(item.TipoDeComercio == 1 ? "Restaurantes" :
-                  item.TipoDeComercio == 2 ? "Supermercados" :
-                  item.TipoDeComercio == 3 ? "Ferreterías" : "Otros")
-            </td>
-            <td>@item.Telefono</td>
-            <td>@item.CorreoElectronico</td>
-            <td>@(item.Estado ? "Activo" : "Inactivo")</td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.IdComercio">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.IdComercio">Detalles</a> |
-                <a href="#">Ver cajas</a>
-            </td>
+            <th>Identificación</th>
+            <th>Tipo ID</th>
+            <th>Nombre</th>
+            <th>Tipo Comercio</th>
+            <th>Teléfono</th>
+            <th>Correo</th>
+            <th>Estado</th>
+            <th></th>
         </tr>
-    }
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Identificacion</td>
+
+                <td>
+                    @(item.TipoIdentificacion == 1 ? "Física" : "Jurídica")
+                </td>
+
+                <td>@item.Nombre</td>
+
+                <td>
+                    @(item.TipoDeComercio == 1 ? "Restaurantes" :
+                      item.TipoDeComercio == 2 ? "Supermercados" :
+                      item.TipoDeComercio == 3 ? "Ferreterías" : "Otros")
+                </td>
+
+                <td>@item.Telefono</td>
+
+                <td>@item.CorreoElectronico</td>
+
+                <td>
+                    @(item.Estado ? "Activo" : "Inactivo")
+                </td>
+
+                <td>
+                    <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@item.IdComercio">Editar</a>
+
+                    <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@item.IdComercio">Detalles</a>
+
+                    <a class="btn btn-sm btn-secondary" href="#">Ver Cajas</a>
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>

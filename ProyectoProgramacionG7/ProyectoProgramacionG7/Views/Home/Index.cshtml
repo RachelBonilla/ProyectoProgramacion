@@ -1,8 +1,42 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿<h1>SINPE Empresarial</h1>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<p>
+    Plataforma del Banco Los Patitos para la verificación y control de pagos electrónicos
+    realizados mediante el Sistema Nacional de Pagos Electrónicos (SINPE).
+</p>
+
+<hr>
+
+<div class="row">
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5>Comercios afiliados</h5>
+                <p>Administrar los comercios registrados .</p>
+                <a href="/Comercio" class="btn btn-primary">Ver Comercios</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5>Cajas</h5>
+                <p>Gestión de cajas registradoras por comercio.</p>
+                <a href="/Cajas" class="btn btn-primary">Ver Cajas</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5>Pagos SINPE</h5>
+                <p>Verificar pagos electrónicos recibidos.</p>
+                <a href="#" class="btn btn-primary">Ver Pagos</a>
+            </div>
+        </div>
+    </div>
+
 </div>

@@ -18,51 +18,51 @@ namespace ProyectoProgramacionG7.Controllers
             _bitacora = bitacora;
         }
 
-        // GET: Cajas
+        // LISTAR
         public async Task<IActionResult> Index()
         {
-            var lista = await _context.Cajas
+            var cajas = await _context.Cajas
                 .Include(c => c.Comercio)
                 .ToListAsync();
 
-            return View(lista);
+            return View(cajas);
         }
 
-        // GET: Cajas/Create
+        // ABRIR FORMULARIO
         public IActionResult Create()
         {
             ViewBag.Comercios = _context.Comercios.ToList();
             return View();
         }
 
-        // POST: Cajas/Create
+        // GUARDAR
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Caja caja)
         {
             try
             {
-                if (ModelState.IsValid)
-                {
+              
+             
                     caja.FechaDeRegistro = DateTime.Now;
                     caja.Estado = true;
 
-                    _context.Add(caja);
+                    _context.Cajas.Add(caja);
                     await _context.SaveChangesAsync();
 
                     var datos = JsonSerializer.Serialize(caja);
 
                     await _bitacora.RegistrarEvento(
                         "Cajas",
-                        "Registrar",
-                        "Se registró una nueva caja",
+                        "Crear",
+                        "Se creó una nueva caja",
                         "",
-                        datos,
-                        null
+                        null,
+                        datos
                     );
 
-                    return RedirectToAction(nameof(Index));
-                }
+                    return RedirectToAction("Index");
+                
             }
             catch (Exception ex)
             {
@@ -80,22 +80,19 @@ namespace ProyectoProgramacionG7.Controllers
             return View(caja);
         }
 
-        // GET: Cajas/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // EDITAR
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-                return NotFound();
-
             var caja = await _context.Cajas.FindAsync(id);
 
             if (caja == null)
                 return NotFound();
 
             ViewBag.Comercios = _context.Comercios.ToList();
+
             return View(caja);
         }
 
-        // POST: Cajas/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Caja caja)
@@ -107,29 +104,29 @@ namespace ProyectoProgramacionG7.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var cajaAnterior = await _context.Cajas
+                    var anterior = await _context.Cajas
                         .AsNoTracking()
-                        .FirstOrDefaultAsync(c => c.IdCaja == id);
+                        .FirstOrDefaultAsync(x => x.IdCaja == id);
 
-                    var datosAnteriores = JsonSerializer.Serialize(cajaAnterior);
+                    var datosAntes = JsonSerializer.Serialize(anterior);
 
                     caja.FechaDeModificacion = DateTime.Now;
 
                     _context.Update(caja);
                     await _context.SaveChangesAsync();
 
-                    var datosPosteriores = JsonSerializer.Serialize(caja);
+                    var datosDespues = JsonSerializer.Serialize(caja);
 
                     await _bitacora.RegistrarEvento(
                         "Cajas",
                         "Editar",
                         "Se editó una caja",
                         "",
-                        datosAnteriores,
-                        datosPosteriores
+                        datosAntes,
+                        datosDespues
                     );
 
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction("Index");
                 }
             }
             catch (Exception ex)
@@ -148,12 +145,9 @@ namespace ProyectoProgramacionG7.Controllers
             return View(caja);
         }
 
-        // GET: Cajas/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // ELIMINAR
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-                return NotFound();
-
             var caja = await _context.Cajas
                 .Include(c => c.Comercio)
                 .FirstOrDefaultAsync(m => m.IdCaja == id);
@@ -164,8 +158,7 @@ namespace ProyectoProgramacionG7.Controllers
             return View(caja);
         }
 
-        // POST: Cajas/Delete
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -176,7 +169,7 @@ namespace ProyectoProgramacionG7.Controllers
                 if (caja == null)
                     return NotFound();
 
-                var datosAnteriores = JsonSerializer.Serialize(caja);
+                var datosAntes = JsonSerializer.Serialize(caja);
 
                 _context.Cajas.Remove(caja);
                 await _context.SaveChangesAsync();
@@ -186,11 +179,11 @@ namespace ProyectoProgramacionG7.Controllers
                     "Eliminar",
                     "Se eliminó una caja",
                     "",
-                    datosAnteriores,
+                    datosAntes,
                     null
                 );
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
@@ -203,7 +196,7 @@ namespace ProyectoProgramacionG7.Controllers
                     null
                 );
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index");
             }
         }
     }

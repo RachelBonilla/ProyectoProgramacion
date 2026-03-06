@@ -21,7 +21,7 @@
                 <td>@item.Nombre</td>
                 <td>@item.Codigo</td>
                 <td>@item.Comercio?.Nombre</td>
-                <td>@(item.Estado ? "Activa" : "Inactiva")</td>
+                <td>@(item.Estado ?? false ?  "Activa" : "Inactiva")</td>
                 <td>
                     <a href="/Cajas/Edit/@item.IdCaja">Editar</a> |
                     <a href="/Cajas/Delete/@item.IdCaja">Eliminar</a>
