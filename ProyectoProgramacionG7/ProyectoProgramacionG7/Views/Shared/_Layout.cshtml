@@ -1,56 +1,92 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ProyectoProgramacionG7</title>
-    <script type="importmap"></script>
+    <title>@ViewData["Title"] - Sistema de Comercios</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/ProyectoProgramacionG7.styles.css" asp-append-version="true" />
+
 </head>
-<body>
+
+<body style="background-color:#f5f6fa;">
+
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ProyectoProgramacionG7</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+            <div class="container">
+
+                <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index">
+                    Sistema Comercios
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+
+                <div class="collapse navbar-collapse" id="menu">
+
+                    <ul class="navbar-nav me-auto">
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Comercio" asp-action="Index">Comercios</a>
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">
+                                Inicio
+                            </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Cajas" asp-action="Index">Cajas</a>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" asp-controller="Comercio" asp-action="Index">
+                                Comercios
+                            </a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Cajas" asp-action="Index">
+                                Cajas
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Bitacora" asp-action="Index">
+                                Bitácora
+                            </a>
+                        </li>
+
                     </ul>
+
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+    <div class="container mt-4">
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                <main role="main">
+                    @RenderBody()
+                </main>
+
+            </div>
+        </div>
+
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - ProyectoProgramacionG7 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="footer bg-dark text-white mt-5 p-3">
+        <div class="container text-center">
+
+            Sistema de Gestión de Comercios
+            <br>
+            <small>Proyecto Programación G7 - 2026</small>
+
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>
