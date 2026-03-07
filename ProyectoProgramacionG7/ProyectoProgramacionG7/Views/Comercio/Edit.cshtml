@@ -1,36 +1,52 @@
 ﻿@model Modelos.Models.Comercio
 
-<h2>Editar Comercio</h2>
+<h2 class="mb-4">Editar Comercio</h2>
 
-<form asp-action="Edit">
+<form asp-action="Edit" class="row g-3">
+
     <input type="hidden" asp-for="IdComercio" />
 
-    <label>Nombre</label><br />
-    <input asp-for="Nombre" /><br />
+    <div class="col-12">
+        <label class="form-label">Nombre</label>
+        <input asp-for="Nombre" class="form-control" />
+    </div>
 
-    <label>Tipo de Comercio</label><br />
-    <select asp-for="TipoDeComercio">
-        <option value="1">Restaurantes</option>
-        <option value="2">Supermercados</option>
-        <option value="3">Ferreterías</option>
-        <option value="4">Otros</option>
-    </select><br />
+    <div class="col-12 col-md-6">
+        <label class="form-label">Tipo de Comercio</label>
+        <select asp-for="TipoDeComercio" class="form-select">
+            <option value="1">Restaurantes</option>
+            <option value="2">Supermercados</option>
+            <option value="3">Ferreterías</option>
+            <option value="4">Otros</option>
+        </select>
+    </div>
 
-    <label>Teléfono</label><br />
-    <input asp-for="Telefono" /><br />
+    <div class="col-12 col-md-6">
+        <label class="form-label">Estado</label>
+        <select asp-for="Estado" class="form-select">
+            <option value="true">Activo</option>
+            <option value="false">Inactivo</option>
+        </select>
+    </div>
 
-    <label>Correo</label><br />
-    <input asp-for="CorreoElectronico" /><br />
+    <div class="col-12 col-md-6">
+        <label class="form-label">Teléfono</label>
+        <input asp-for="Telefono" class="form-control" />
+    </div>
 
-    <label>Dirección</label><br />
-    <input asp-for="Direccion" /><br />
+    <div class="col-12 col-md-6">
+        <label class="form-label">Correo</label>
+        <input asp-for="CorreoElectronico" class="form-control" />
+    </div>
 
-    <label>Estado</label><br />
-    <select asp-for="Estado">
-        <option value="true">Activo</option>
-        <option value="false">Inactivo</option>
-    </select><br /><br />
+    <div class="col-12">
+        <label class="form-label">Dirección</label>
+        <input asp-for="Direccion" class="form-control" />
+    </div>
 
-    <button type="submit">Actualizar</button>
-    <a asp-action="Index">Volver</a>
+    <div class="col-12 d-flex justify-content-between mt-3">
+        <button type="submit" class="btn btn-primary">Actualizar</button>
+        <a asp-action="Index" class="btn btn-secondary">Volver</a>
+    </div>
+
 </form>

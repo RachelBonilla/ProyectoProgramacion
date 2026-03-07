@@ -19,10 +19,12 @@ namespace ProyectoProgramacionG7.Data
         public DbSet<Comercio> Comercios { get; set; }
         public DbSet<BitacoraEvento> BitacoraEventos { get; set; }
 
+        // NUEVA TABLA SINPE
+        public DbSet<Sinpe> Sinpes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
         }
     }
 }
-

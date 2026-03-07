@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Modelos.Models.Sinpe>
+
+<h2>Pagos SINPE</h2>
+
+<table class="table table-striped mt-3">
+    <thead>
+        <tr>
+            <th>Caja</th>
+            <th>Comercio</th>
+            <th>Teléfono Origen</th>
+            <th>Nombre Origen</th>
+            <th>Teléfono Destinatario</th>
+            <th>Nombre Destinatario</th>
+            <th>Monto</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Caja?.Nombre</td>
+                <td>@item.Caja?.Comercio?.Nombre</td>
+                <td>@item.TelefonoOrigen</td>
+                <td>@item.NombreOrigen</td>
+                <td>@item.TelefonoDestinatario</td>
+                <td>@item.NombreDestinatario</td>
+                <td>@item.Monto.ToString("C")</td>
+                <td>@(item.Estado ? "Sincronizado" : "No sincronizado")</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -7,29 +7,29 @@ namespace Modelos.Models
     public class Caja
     {
         [Key]
-        public int?  IdCaja { get; set; }
+        public int IdCaja { get; set; }  // ID no nullable
 
-        [Required(ErrorMessage = "El comercio es obligatorio")]
         [ForeignKey("Comercio")]
-        public int?  IdComercio { get; set; }
+        public int? IdComercio { get; set; } // nullable
 
-        public Comercio Comercio { get; set; }
+        public Comercio? Comercio { get; set; } // nullable
 
-        [Required(ErrorMessage = "El nombre de la caja es obligatorio")]
         [StringLength(200)]
-        public string? Nombre { get; set; }
+        public string? Nombre { get; set; } // nullable, se protege en la consulta
 
-        [Required(ErrorMessage = "El código de la caja es obligatorio")]
         [StringLength(50)]
-        public string? Codigo { get; set; }
+        public string? Codigo { get; set; } // nullable, se protege en la consulta
+
+        [StringLength(10)]
+        public string? Telefono { get; set; }  // nullable
 
         [Required]
-        public bool?  Estado { get; set; }
+        public bool Estado { get; set; }
 
         [Required]
-        public DateTime?  FechaDeRegistro { get; set; }
+        public DateTime FechaDeRegistro { get; set; }
 
-        public DateTime?  FechaDeModificacion { get; set; }
+        public DateTime? FechaDeModificacion { get; set; }
 
         [StringLength(100)]
         public string? UsuarioRegistro { get; set; }

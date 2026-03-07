@@ -23,6 +23,20 @@ namespace ProyectoProgramacionG7.Controllers
         {
             var cajas = await _context.Cajas
                 .Include(c => c.Comercio)
+                .Select(c => new Caja
+                {
+                    IdCaja = c.IdCaja,
+                    IdComercio = c.IdComercio,
+                    Comercio = c.Comercio,
+                    Nombre = c.Nombre ?? "Sin Nombre",
+                    Codigo = c.Codigo ?? "Sin Código",
+                    Telefono = c.Telefono ?? "Sin Teléfono",
+                    Estado = c.Estado,
+                    FechaDeRegistro = c.FechaDeRegistro,
+                    FechaDeModificacion = c.FechaDeModificacion,
+                    UsuarioRegistro = c.UsuarioRegistro ?? "",
+                    UsuarioModificacion = c.UsuarioModificacion ?? ""
+                })
                 .ToListAsync();
 
             return View(cajas);
@@ -42,27 +56,24 @@ namespace ProyectoProgramacionG7.Controllers
         {
             try
             {
-              
-             
-                    caja.FechaDeRegistro = DateTime.Now;
-                    caja.Estado = true;
+                caja.FechaDeRegistro = DateTime.Now;
+                caja.Estado = true;
 
-                    _context.Cajas.Add(caja);
-                    await _context.SaveChangesAsync();
+                _context.Cajas.Add(caja);
+                await _context.SaveChangesAsync();
 
-                    var datos = JsonSerializer.Serialize(caja);
+                var datos = JsonSerializer.Serialize(caja);
 
-                    await _bitacora.RegistrarEvento(
-                        "Cajas",
-                        "Crear",
-                        "Se creó una nueva caja",
-                        "",
-                        null,
-                        datos
-                    );
+                await _bitacora.RegistrarEvento(
+                    "Cajas",
+                    "Crear",
+                    "Se creó una nueva caja",
+                    "",
+                    null,
+                    datos
+                );
 
-                    return RedirectToAction("Index");
-                
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
@@ -89,7 +100,6 @@ namespace ProyectoProgramacionG7.Controllers
                 return NotFound();
 
             ViewBag.Comercios = _context.Comercios.ToList();
-
             return View(caja);
         }
 
