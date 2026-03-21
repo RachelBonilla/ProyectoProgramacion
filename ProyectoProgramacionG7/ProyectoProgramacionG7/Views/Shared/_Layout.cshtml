@@ -169,5 +169,31 @@
             });
     </script>
 
+    <!-- jQuery - Josue -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+
+            // Resaltar filas 
+            $('table tbody tr').on('mouseenter', function() {
+                $(this).css('background-color', '#fff3cd');
+            }).on('mouseleave', function() {
+                $(this).css('background-color', '');
+            });
+
+            // Hover en botón de accesibilidad
+            $('#btnAccesibilidad').on('mouseenter', function() {
+                $(this).css('transform', 'scale(1.1)');
+            }).on('mouseleave', function() {
+                $(this).css('transform', 'scale(1)');
+            });
+
+        });
+    </script>
+
 </body>
+
+
+
+
 </html>

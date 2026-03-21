@@ -19,6 +19,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     );
 });
 
+
 // Servicio de Bitácora
 builder.Services.AddScoped<IBitacoraService, BitacoraService>();
 
