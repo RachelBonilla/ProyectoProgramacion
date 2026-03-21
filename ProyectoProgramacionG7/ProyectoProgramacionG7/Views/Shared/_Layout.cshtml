@@ -12,11 +12,11 @@
 
 <body>
 
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <header role="banner">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary" role="navigation" aria-label="Menú principal">
             <div class="container-fluid">
 
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index" aria-label="Ir al inicio">
                     🏦 SINPE Empresarial
                 </a>
 
@@ -61,10 +61,67 @@
 
                     </ul>
 
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <button id="btnAccesibilidad" class="btn btn-outline-dark rounded-pill px-3"
+                                    data-bs-toggle="offcanvas"
+                                    data-bs-target="#panelAccesibilidad"
+                                    aria-label="Opciones de accesibilidad">
+                                ♿
+                            </button>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>
     </header>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="panelAccesibilidad"
+         aria-labelledby="panelAccesibilidadLabel">
+
+        <div class="offcanvas-header">
+            <h5 id="panelAccesibilidadLabel">Opciones de accesibilidad</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+                    aria-label="Cerrar"></button>
+        </div>
+
+        <div class="offcanvas-body">
+
+            <!-- Botón de alto contraste -->
+            <button id="alto-contraste" class="btn btn-dark w-100 mb-3"
+                    aria-label="Activar modo alto contraste">
+                Alto contraste
+            </button>
+
+            <!-- Slide-right para tamaño de letra -->
+            <label for="slider-fuente" class="form-label fw-bold">
+                Tamaño de letra
+            </label>
+
+            <input type="range"
+                   id="slider-fuente"
+                   class="form-range"
+                   min="1"
+                   max="4"
+                   step="1"
+                   value="2"
+                   role="slider"
+                   aria-valuemin="1"
+                   aria-valuemax="4"
+                   aria-valuenow="2"
+                   aria-label="Control deslizante para ajustar tamaño de fuente">
+
+            <!-- Marcas discretas -->
+            <div class="slider-marks d-flex justify-content-between mt-1 px-1">
+                <span class="mark">A–</span>
+                <span class="mark">A</span>
+                <span class="mark">A+</span>
+                <span class="mark">A++</span>
+            </div>
+
+        </div>
+    </div>
+
 
     <div class="container mt-4">
         @RenderBody()
@@ -75,6 +132,42 @@
     </footer>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+            // Modo alto contraste
+                        document.addEventListener("DOMContentLoaded", function () {
+
+                const btnContraste = document.getElementById("alto-contraste");
+
+                if (btnContraste) {
+                    btnContraste.addEventListener("click", function () {
+                        document.body.classList.toggle("alto-contraste");
+                    });
+                }
+            // Tamaño de letra
+                const slider = document.getElementById("slider-fuente");
+
+                if (slider) {
+                    slider.addEventListener("input", function () {
+                        slider.setAttribute("aria-valuenow", slider.value);
+
+                        switch (slider.value) {
+                            case "1":
+                                document.documentElement.style.fontSize = "90%";
+                                break;
+                            case "2":
+                                document.documentElement.style.fontSize = "100%";
+                                break;
+                            case "3":
+                                document.documentElement.style.fontSize = "120%";
+                                break;
+                            case "4":
+                                document.documentElement.style.fontSize = "140%";
+                                break;
+                        }
+                    });
+                }
+            });
+    </script>
 
 </body>
 </html>

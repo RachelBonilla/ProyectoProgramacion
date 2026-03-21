@@ -126,3 +126,155 @@ footer {
     background-color: #f5f5f5;
     padding: 10px;
 }
+
+/* =========================
+   NAVEGACION POR TECLADO
+========================= */
+
+/* navegación por teclado */
+:focus {
+    outline: 3px solid #005fcc !important;
+    outline-offset: 3px;
+}
+
+/* Foco visible en botones */
+button:focus,
+.btn:focus {
+    outline: 3px solid #ffeb3b !important;
+    outline-offset: 3px;
+}
+
+/* Foco visible en enlaces */
+a:focus {
+    outline: 3px solid #ffeb3b !important;
+    outline-offset: 3px;
+}
+
+/* Foco visible en inputs */
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 3px solid #ffeb3b !important;
+    outline-offset: 3px;
+}
+
+/* ============================
+   MODO ALTO CONTRASTE
+   ============================ */
+
+.alto-contraste {
+    background-color: #000 !important;
+    color: #fff !important;
+}
+
+    /* Texto 
+    .alto-contraste * {
+        color: #ffffff !important;
+    }*/
+
+    /* Enlaces */
+    .alto-contraste a {
+        color: #00e5ff !important; /* contraste 7.8:1 */
+        text-decoration: underline;
+    }
+
+    /* Navbar */
+    .alto-contraste .navbar {
+        background-color: #000 !important;
+        border-bottom: 2px solid #fff;
+    }
+
+    .alto-contraste .navbar-brand,
+    .alto-contraste .nav-link {
+        color: #fff !important;
+    }
+
+    /* Botones */
+    .alto-contraste .btn {
+        background-color: #111 !important;
+        color: #fff !important;
+        border: 1px solid #fff !important;
+    }
+
+        .alto-contraste .btn:hover {
+            background-color: #333 !important;
+        }
+
+    /* Panel lateral */
+    .alto-contraste .offcanvas {
+        background-color: #000 !important;
+        color: #fff !important;
+    }
+
+    /* Inputs */
+    .alto-contraste input,
+    .alto-contraste select,
+    .alto-contraste textarea {
+        background-color: #111 !important;
+        color: #fff !important;
+        border: 1px solid #fff !important;
+    }
+
+    /* Slider track */
+    .alto-contraste #slider-fuente::-webkit-slider-runnable-track {
+        background: #fff !important;
+    }
+
+    .alto-contraste #slider-fuente::-moz-range-track {
+        background: #fff !important;
+    }
+
+    /* Slider thumb */
+    .alto-contraste #slider-fuente::-webkit-slider-thumb {
+        background: #00e5ff !important;
+    }
+
+    .alto-contraste #slider-fuente::-moz-range-thumb {
+        background: #00e5ff !important;
+    }
+
+/* =========================
+   SLIDER
+========================= */
+
+/* Marcas discretas */
+.slider-marks .mark {
+    font-size: 0.85rem;
+    color: #444;
+    user-select: none;
+}
+
+/* Barra visible y gruesa */
+#slider-fuente {
+    height: 12px;
+    accent-color: #0d6efd;
+}
+
+    /* Track visible */
+    #slider-fuente::-webkit-slider-runnable-track {
+        height: 12px;
+        background: #b0bec5;
+        border-radius: 6px;
+    }
+
+    #slider-fuente::-moz-range-track {
+        height: 12px;
+        background: #b0bec5;
+        border-radius: 6px;
+    }
+
+    /* Thumb grande y accesible */
+    #slider-fuente::-webkit-slider-thumb {
+        width: 22px;
+        height: 22px;
+        background: #0d6efd;
+        border-radius: 50%;
+        margin-top: -5px;
+    }
+
+    #slider-fuente::-moz-range-thumb {
+        width: 22px;
+        height: 22px;
+        background: #0d6efd;
+        border-radius: 50%;
+    }
