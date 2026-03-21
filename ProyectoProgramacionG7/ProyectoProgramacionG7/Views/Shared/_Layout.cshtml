@@ -12,6 +12,12 @@
 
 <body>
 
+    <div id="mensajeAccesible"
+         aria-live="polite"
+         aria-atomic="true"
+         class="visually-hidden">
+    </div>
+
     <header role="banner">
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary" role="navigation" aria-label="Menú principal">
             <div class="container-fluid">
@@ -20,7 +26,7 @@
                     🏦 SINPE Empresarial
                 </a>
 
-                <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menu">
+                <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menu" aria-label="Abrir menú">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -29,7 +35,7 @@
                     <ul class="navbar-nav me-auto">
 
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Index">
+                            <a class="nav-link active" aria-current="page" asp-controller="Home" asp-action="Index">
                                 Inicio
                             </a>
                         </li>
@@ -136,11 +142,22 @@
             // Modo alto contraste
                         document.addEventListener("DOMContentLoaded", function () {
 
+                function mostrarMensajeAccesible(texto) {
+                    const mensaje = document.getElementById("mensajeAccesible");
+                    mensaje.textContent = texto;
+                }
+
                 const btnContraste = document.getElementById("alto-contraste");
 
                 if (btnContraste) {
                     btnContraste.addEventListener("click", function () {
                         document.body.classList.toggle("alto-contraste");
+
+                        if (document.body.classList.contains("alto-contraste")) {
+                            mostrarMensajeAccesible("Modo alto contraste activado");
+                        } else {
+                            mostrarMensajeAccesible("Modo alto contraste desactivado");
+                        }
                     });
                 }
             // Tamaño de letra
@@ -153,15 +170,19 @@
                         switch (slider.value) {
                             case "1":
                                 document.documentElement.style.fontSize = "90%";
+                                mostrarMensajeAccesible("Tamaño de letra pequeño");
                                 break;
                             case "2":
                                 document.documentElement.style.fontSize = "100%";
+                                mostrarMensajeAccesible("Tamaño de letra normal");
                                 break;
                             case "3":
                                 document.documentElement.style.fontSize = "120%";
+                                mostrarMensajeAccesible("Tamaño de letra grande");
                                 break;
                             case "4":
                                 document.documentElement.style.fontSize = "140%";
+                                mostrarMensajeAccesible("Tamaño de letra extra grande");
                                 break;
                         }
                     });
@@ -172,28 +193,24 @@
     <!-- jQuery - Josue -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script>
-        $(document).ready(function() {
+            $(document).ready(function() {
 
-            // Resaltar filas 
-            $('table tbody tr').on('mouseenter', function() {
-                $(this).css('background-color', '#fff3cd');
-            }).on('mouseleave', function() {
-                $(this).css('background-color', '');
+                // Resaltar filas
+                $('table tbody tr').on('mouseenter', function() {
+                    $(this).css('background-color', '#fff3cd');
+                }).on('mouseleave', function() {
+                    $(this).css('background-color', '');
+                });
+
+                // Hover en botón de accesibilidad
+                $('#btnAccesibilidad').on('mouseenter', function() {
+                    $(this).css('transform', 'scale(1.1)');
+                }).on('mouseleave', function() {
+                    $(this).css('transform', 'scale(1)');
+                });
+
             });
-
-            // Hover en botón de accesibilidad
-            $('#btnAccesibilidad').on('mouseenter', function() {
-                $(this).css('transform', 'scale(1.1)');
-            }).on('mouseleave', function() {
-                $(this).css('transform', 'scale(1)');
-            });
-
-        });
     </script>
 
 </body>
-
-
-
-
 </html>
