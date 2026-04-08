@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProyectoProgramacionG7.Data;
 using Modelos.Models;
+using ProyectoProgramacionG7.Data;
 using ProyectoProgramacionG7.Services;
 using System.Text.Json;
 

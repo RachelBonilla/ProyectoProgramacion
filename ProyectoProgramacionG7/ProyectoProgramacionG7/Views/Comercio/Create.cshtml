@@ -1,41 +1,36 @@
-﻿@model Modelos.Models.Comercio
+﻿@model Modelos.Models.Caja
 
-<h2>Registrar Comercio</h2>
+<h2>Crear Caja</h2>
 
 <form asp-action="Create">
-    <label>Identificación</label><br />
-    <input asp-for="Identificacion" /><br />
 
-    <label>Tipo Identificación</label><br />
-    <select asp-for="TipoIdentificacion">
-        <option value="1">Física</option>
-        <option value="2">Jurídica</option>
-    </select><br />
+    <div class="form-group">
+        <label>Comercio</label>
+        <select asp-for="IdComercio" class="form-control">
+            @foreach (var c in ViewBag.Comercios)
+            {
+                <option value="@c.IdComercio">@c.Nombre</option>
+            }
+        </select>
+    </div>
 
-    <label>Nombre</label><br />
-    <input asp-for="Nombre" /><br />
+    <div class="form-group">
+        <label>Nombre</label>
+        <input asp-for="Nombre" class="form-control" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
+    </div>
 
-    <label>Tipo de Comercio</label><br />
-    <select asp-for="TipoDeComercio">
-        <option value="1">Restaurantes</option>
-        <option value="2">Supermercados</option>
-        <option value="3">Ferreterías</option>
-        <option value="4">Otros</option>
-    </select><br />
+    <div class="form-group">
+        <label>Descripción</label>
+        <input asp-for="Descripcion" class="form-control" />
+        <span asp-validation-for="Descripcion" class="text-danger"></span>
+    </div>
 
-    <label>Teléfono</label><br />
-    <input asp-for="Telefono" /><br />
+    <div class="form-group">
+        <label>Teléfono SINPE</label>
+        <input asp-for="TelefonoSINPE" class="form-control" />
+        <span asp-validation-for="TelefonoSINPE" class="text-danger"></span>
+    </div>
 
-    <label>Correo</label><br />
-    <input asp-for="CorreoElectronico" /><br />
-
-    <label>Dirección</label><br />
-    <input asp-for="Direccion" /><br /><br />
-
-    <button type="submit">Guardar</button>
-    <a asp-action="Index">Volver</a>
+    <button type="submit" class="btn btn-success mt-3">Guardar</button>
 </form>
-
-<span style="color:red">
-    @Html.ValidationMessage("Identificacion")
-</span>

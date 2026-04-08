@@ -1,6 +1,5 @@
 ﻿using Modelos.Models;
 using ProyectoProgramacionG7.Data;
-using System.Text.Json;
 
 namespace ProyectoProgramacionG7.Services
 {
@@ -23,11 +22,11 @@ namespace ProyectoProgramacionG7.Services
         {
             var evento = new BitacoraEvento
             {
-                TablaDeEvento = tabla,
-                TipoDeEvento = tipoEvento,
+                TablaDeEvento = tabla ?? "",
+                TipoDeEvento = tipoEvento ?? "",
                 FechaDeEvento = DateTime.Now,
-                DescripcionDeEvento = descripcion,
-                StackTrace = stackTrace,
+                DescripcionDeEvento = descripcion ?? "",
+                StackTrace = stackTrace ?? "",
                 DatosAnteriores = datosAnteriores,
                 DatosPosteriores = datosPosteriores
             };

@@ -2,10 +2,11 @@
 
 <h2>Eliminar Caja</h2>
 
-<p>¿Seguro que desea eliminar la caja <strong>@Model.Nombre</strong>?</p>
+<p>¿Seguro que desea desactivar la caja <strong>@Model.Nombre</strong>?</p>
 
 <form asp-action="DeleteConfirmed">
     <input type="hidden" asp-for="IdCaja" />
+    
     <button type="submit" class="btn btn-danger">Eliminar</button>
     <a href="/Cajas" class="btn btn-secondary">Cancelar</a>
 </form>

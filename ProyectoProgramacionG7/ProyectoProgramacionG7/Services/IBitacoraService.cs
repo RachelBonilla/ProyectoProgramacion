@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ProyectoProgramacionG7.Services
+﻿namespace ProyectoProgramacionG7.Services
 {
     public interface IBitacoraService
     {

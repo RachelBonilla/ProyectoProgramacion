@@ -1,63 +1,95 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProyectoProgramacionG7.Data;
 using Modelos.Models;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
+using ProyectoProgramacionG7.Data;
+using ProyectoProgramacionG7.Services;
+using System.Text.Json;
 
 namespace ProyectoProgramacionG7.Controllers
 {
     public class SinpeController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly IBitacoraService _bitacora;
 
-        public SinpeController(AppDbContext context)
+        public SinpeController(AppDbContext context, IBitacoraService bitacora)
         {
             _context = context;
+            _bitacora = bitacora;
         }
 
-        // GET: Sinpe/Create
+       
         public IActionResult Create()
         {
             ViewBag.Cajas = _context.Cajas.Where(c => c.Estado == true).ToList();
             return View();
         }
 
-        // POST: Sinpe/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Sinpe sinpe)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                ViewBag.Cajas = _context.Cajas.Where(c => c.Estado == true).ToList();
-                return View(sinpe);
+                if (!ModelState.IsValid)
+                {
+                    ViewBag.Cajas = _context.Cajas.Where(c => c.Estado == true).ToList();
+                    return View(sinpe);
+                }
+
+                var caja = await _context.Cajas
+                    .FirstOrDefaultAsync(c => c.IdCaja == sinpe.CajaId);
+
+                if (caja == null || !caja.Estado)
+                {
+                    ModelState.AddModelError("", "La caja no existe o está inactiva.");
+                    ViewBag.Cajas = _context.Cajas.Where(c => c.Estado == true).ToList();
+                    return View(sinpe);
+                }
+
+                if (caja.TelefonoSINPE != sinpe.TelefonoDestinatario)
+                {
+                    ModelState.AddModelError("", "El teléfono destinatario no coincide con la caja.");
+                    ViewBag.Cajas = _context.Cajas.Where(c => c.Estado == true).ToList();
+                    return View(sinpe);
+                }
+
+                sinpe.FechaDeRegistro = DateTime.Now;
+                sinpe.Estado = false; // NO sincronizado
+
+                _context.Sinpes.Add(sinpe);
+                await _context.SaveChangesAsync();
+
+                var datos = JsonSerializer.Serialize(sinpe);
+
+                await _bitacora.RegistrarEvento(
+                    "SINPE",
+                    "Registrar",
+                    "Se registró un pago SINPE",
+                    "",
+                    datos,
+                    null
+                );
+
+                ViewBag.Mensaje = "Pago registrado correctamente.";
+                ModelState.Clear();
+            }
+            catch (Exception ex)
+            {
+                await _bitacora.RegistrarEvento(
+                    "SINPE",
+                    "Error",
+                    ex.Message,
+                    ex.StackTrace,
+                    null,
+                    null
+                );
             }
 
-            var caja = await _context.Cajas.FirstOrDefaultAsync(c => c.IdCaja == sinpe.CajaId);
-
-            if (caja == null || caja.Estado != true)
-            {
-                ModelState.AddModelError("", "Caja no válida o inactiva.");
-                ViewBag.Cajas = _context.Cajas.Where(c => c.Estado == true).ToList();
-                return View(sinpe);
-            }
-
-            sinpe.FechaDeRegistro = DateTime.Now;
-            sinpe.Estado = false; // No sincronizado por defecto
-
-            _context.Sinpes.Add(sinpe);
-            await _context.SaveChangesAsync();
-
-            ViewBag.Mensaje = "Pago SINPE registrado correctamente.";
             ViewBag.Cajas = _context.Cajas.Where(c => c.Estado == true).ToList();
-            ModelState.Clear();
-
             return View();
         }
 
-        // GET: Sinpe/Index
         public async Task<IActionResult> Index()
         {
             var sinpes = await _context.Sinpes

@@ -8,25 +8,38 @@
     <thead>
         <tr>
             <th>Nombre</th>
-            <th>Código</th>
-            <th>Teléfono</th>
+            <th>Descripción</th>
+            <th>Teléfono SINPE</th>
             <th>Comercio</th>
             <th>Estado</th>
             <th>Acciones</th>
         </tr>
     </thead>
+
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td>@(item.Nombre ?? "Sin Nombre")</td>
-                <td>@(item.Codigo ?? "Sin Código")</td>
-                <td>@(item.Telefono ?? "Sin Teléfono")</td>
-                <td>@(item.Comercio?.Nombre ?? "Sin Comercio")</td>
-                <td>@(item.Estado ? "Activa" : "Inactiva")</td>
+                <td>@item.Nombre</td>
+
+                <td>
+                    @(item.Descripcion != null && item.Descripcion.Length > 10
+                        ? item.Descripcion.Substring(0, 10) + "..."
+                        : item.Descripcion)
+                </td>
+
+                <td>@item.TelefonoSINPE</td>
+
+                <td>@item.Comercio?.Nombre</td>
+
+                <td>
+                    @(item.Estado ? "Activo" : "Inactivo")
+                </td>
+
                 <td>
                     <a class="btn btn-sm btn-warning" href="/Cajas/Edit/@item.IdCaja">Editar</a>
                     <a class="btn btn-sm btn-danger" href="/Cajas/Delete/@item.IdCaja">Eliminar</a>
+                    <a class="btn btn-sm btn-info" href="/Cajas/VerSinpe/@item.IdCaja">Ver SINPE</a>
                 </td>
             </tr>
         }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProyectoProgramacionG7.Data;
 using Modelos.Models;
+using ProyectoProgramacionG7.Data;
 using ProyectoProgramacionG7.Services;
 using System.Text.Json;
 
@@ -18,44 +18,51 @@ namespace ProyectoProgramacionG7.Controllers
             _bitacora = bitacora;
         }
 
-        // LISTAR
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? comercioId)
         {
-            var cajas = await _context.Cajas
+            var cajas = _context.Cajas
                 .Include(c => c.Comercio)
-                .Select(c => new Caja
-                {
-                    IdCaja = c.IdCaja,
-                    IdComercio = c.IdComercio,
-                    Comercio = c.Comercio,
-                    Nombre = c.Nombre ?? "Sin Nombre",
-                    Codigo = c.Codigo ?? "Sin Código",
-                    Telefono = c.Telefono ?? "Sin Teléfono",
-                    Estado = c.Estado,
-                    FechaDeRegistro = c.FechaDeRegistro,
-                    FechaDeModificacion = c.FechaDeModificacion,
-                    UsuarioRegistro = c.UsuarioRegistro ?? "",
-                    UsuarioModificacion = c.UsuarioModificacion ?? ""
-                })
-                .ToListAsync();
+                .AsQueryable();
 
-            return View(cajas);
+            if (comercioId != null)
+            {
+                cajas = cajas.Where(c => c.IdComercio == comercioId);
+            }
+
+            var lista = await cajas.ToListAsync();
+
+            foreach (var c in lista)
+            {
+                c.Nombre ??= "Sin nombre";
+                c.Descripcion ??= "Sin descripción";
+                c.TelefonoSINPE ??= "Sin teléfono";
+            }
+
+            return View(lista);
         }
 
-        // ABRIR FORMULARIO
         public IActionResult Create()
         {
             ViewBag.Comercios = _context.Comercios.ToList();
             return View();
         }
 
-        // GUARDAR
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Caja caja)
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    ViewBag.Comercios = _context.Comercios.ToList();
+                    return View(caja);
+                }
+
+                caja.Nombre ??= "Sin nombre";
+                caja.Descripcion ??= "Sin descripción";
+                caja.TelefonoSINPE ??= "Sin teléfono";
+
                 caja.FechaDeRegistro = DateTime.Now;
                 caja.Estado = true;
 
@@ -66,8 +73,72 @@ namespace ProyectoProgramacionG7.Controllers
 
                 await _bitacora.RegistrarEvento(
                     "Cajas",
-                    "Crear",
-                    "Se creó una nueva caja",
+                    "Registrar",
+                    "Se registró una caja",
+                    "",
+                    datos,
+                    null
+                );
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                await _bitacora.RegistrarEvento(
+                    "Cajas",
+                    "Error",
+                    ex.Message,
+                    ex.StackTrace,
+                    null,
+                    null
+                );
+            }
+
+            ViewBag.Comercios = _context.Comercios.ToList();
+            return View(caja);
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var caja = await _context.Cajas.FindAsync(id);
+
+            if (caja == null)
+                return NotFound();
+
+            ViewBag.Comercios = _context.Comercios.ToList();
+            return View(caja);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Caja caja)
+        {
+            if (id != caja.IdCaja)
+                return NotFound();
+
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    ViewBag.Comercios = _context.Comercios.ToList();
+                    return View(caja);
+                }
+
+                caja.Nombre ??= "Sin nombre";
+                caja.Descripcion ??= "Sin descripción";
+                caja.TelefonoSINPE ??= "Sin teléfono";
+
+                caja.FechaDeModificacion = DateTime.Now;
+
+                _context.Update(caja);
+                await _context.SaveChangesAsync();
+
+                var datos = JsonSerializer.Serialize(caja);
+
+                await _bitacora.RegistrarEvento(
+                    "Cajas",
+                    "Editar",
+                    "Se editó una caja",
                     "",
                     null,
                     datos
@@ -91,121 +162,36 @@ namespace ProyectoProgramacionG7.Controllers
             return View(caja);
         }
 
-        // EDITAR
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> VerSinpe(int id)
         {
-            var caja = await _context.Cajas.FindAsync(id);
+            var sinpes = await _context.Sinpes
+                .Where(s => s.CajaId.HasValue && s.CajaId == id)
+                .OrderByDescending(s => s.FechaDeRegistro)
+                .ToListAsync();
 
-            if (caja == null)
-                return NotFound();
-
-            ViewBag.Comercios = _context.Comercios.ToList();
-            return View(caja);
+            return View(sinpes);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Caja caja)
-        {
-            if (id != caja.IdCaja)
-                return NotFound();
-
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    var anterior = await _context.Cajas
-                        .AsNoTracking()
-                        .FirstOrDefaultAsync(x => x.IdCaja == id);
-
-                    var datosAntes = JsonSerializer.Serialize(anterior);
-
-                    caja.FechaDeModificacion = DateTime.Now;
-
-                    _context.Update(caja);
-                    await _context.SaveChangesAsync();
-
-                    var datosDespues = JsonSerializer.Serialize(caja);
-
-                    await _bitacora.RegistrarEvento(
-                        "Cajas",
-                        "Editar",
-                        "Se editó una caja",
-                        "",
-                        datosAntes,
-                        datosDespues
-                    );
-
-                    return RedirectToAction("Index");
-                }
-            }
-            catch (Exception ex)
-            {
-                await _bitacora.RegistrarEvento(
-                    "Cajas",
-                    "Error",
-                    ex.Message,
-                    ex.StackTrace,
-                    null,
-                    null
-                );
-            }
-
-            ViewBag.Comercios = _context.Comercios.ToList();
-            return View(caja);
-        }
-
-        // ELIMINAR
-        public async Task<IActionResult> Delete(int id)
-        {
-            var caja = await _context.Cajas
-                .Include(c => c.Comercio)
-                .FirstOrDefaultAsync(m => m.IdCaja == id);
-
-            if (caja == null)
-                return NotFound();
-
-            return View(caja);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Sincronizar(int id)
         {
             try
             {
-                var caja = await _context.Cajas.FindAsync(id);
+                var sinpe = await _context.Sinpes.FindAsync(id);
 
-                if (caja == null)
+                if (sinpe == null)
                     return NotFound();
 
-                var datosAntes = JsonSerializer.Serialize(caja);
+                if (sinpe.Estado == true)
+                    return RedirectToAction("VerSinpe", new { id = sinpe.CajaId });
 
-                _context.Cajas.Remove(caja);
+                sinpe.Estado = true;
+
                 await _context.SaveChangesAsync();
 
-                await _bitacora.RegistrarEvento(
-                    "Cajas",
-                    "Eliminar",
-                    "Se eliminó una caja",
-                    "",
-                    datosAntes,
-                    null
-                );
-
-                return RedirectToAction("Index");
+                return RedirectToAction("VerSinpe", new { id = sinpe.CajaId });
             }
-            catch (Exception ex)
+            catch
             {
-                await _bitacora.RegistrarEvento(
-                    "Cajas",
-                    "Error",
-                    ex.Message,
-                    ex.StackTrace,
-                    null,
-                    null
-                );
-
                 return RedirectToAction("Index");
             }
         }

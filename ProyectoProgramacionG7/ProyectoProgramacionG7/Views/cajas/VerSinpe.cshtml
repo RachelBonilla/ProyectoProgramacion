@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Modelos.Models.Sinpe>
+
+<h2>Pagos SINPE</h2>
+
+<a class="btn btn-secondary mb-3" href="/Cajas">Volver</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Teléfono Origen</th>
+            <th>Nombre Origen</th>
+            <th>Teléfono Destino</th>
+            <th>Nombre Destino</th>
+            <th>Monto</th>
+            <th>Descripción</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@(item.TelefonoOrigen ?? "N/A")</td>
+                <td>@(item.NombreOrigen ?? "N/A")</td>
+                <td>@(item.TelefonoDestinatario ?? "N/A")</td>
+                <td>@(item.NombreDestinatario ?? "N/A")</td>
+                <td>@item.Monto</td>
+                <td>@(item.Descripcion ?? "N/A")</td>
+
+                <td>
+                    @(item.FechaDeRegistro.HasValue
+                        ? item.FechaDeRegistro.Value.ToString("dd/MM/yyyy HH:mm")
+                        : "Sin fecha")
+                </td>
+
+                <td>
+                    @(item.Estado ? "Sincronizado" : "No sincronizado")
+                </td>
+
+                <td>
+                    @if (!item.Estado)
+                    {
+                        <a class="btn btn-success btn-sm"
+                               asp-controller="Cajas"
+                               asp-action="Sincronizar"
+                               asp-route-id="@item.IdSinpe">
+                            Sincronizar
+                        </a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

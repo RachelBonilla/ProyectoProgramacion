@@ -20,4 +20,10 @@
     <ProjectReference Include="..\Modelos\Modelos.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Usuarios\" />
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
 </Project>

@@ -49,7 +49,9 @@
 
                     <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@item.IdComercio">Detalles</a>
 
-                    <a class="btn btn-sm btn-secondary" href="#">Ver Cajas</a>
+                    <a class="btn btn-sm btn-secondary" href="/Cajas/Index?comercioId=@item.IdComercio">Ver Cajas</a>
+
+                    <a class="btn btn-sm btn-dark" href="/Configuracion/Create?comercioId=@item.IdComercio">Configurar</a>
                 </td>
             </tr>
         }
