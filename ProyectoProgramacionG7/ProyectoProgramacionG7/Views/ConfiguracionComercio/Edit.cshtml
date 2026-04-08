@@ -1,0 +1,54 @@
+﻿@model Modelos.Models.ConfiguracionComercio
+
+<h2 class="mb-4">Editar Configuración</h2>
+
+<form asp-action="Edit" method="post">
+
+    <input type="hidden" asp-for="IdConfiguracion" />
+
+    <div class="form-group mb-3">
+        <label>Comercio</label>
+        <select asp-for="IdComercio" class="form-control" disabled>
+            @foreach (var c in ViewBag.Comercios)
+            {
+                <option value="@c.IdComercio"
+                        selected="@(c.IdComercio == Model.IdComercio)">
+                    @c.Nombre
+                </option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Tipo de Configuración</label>
+        <select asp-for="TipoConfiguracion" class="form-control">
+            <option value="1">Plataforma</option>
+            <option value="2">Externa</option>
+            <option value="3">Ambas</option>
+        </select>
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Comisión (%)</label>
+        <input asp-for="Comision" class="form-control" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Estado</label>
+        <select asp-for="Estado" class="form-control">
+            <option value="true">Activo</option>
+            <option value="false">Inactivo</option>
+        </select>
+    </div>
+
+    <br />
+
+    <button type="submit" class="btn btn-success">
+        Guardar Cambios
+    </button>
+
+    <a href="/ConfiguracionComercio" class="btn btn-secondary">
+        Volver
+    </a>
+
+</form>

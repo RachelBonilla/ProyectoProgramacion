@@ -52,21 +52,35 @@
                             </a>
                         </li>
 
-                        <!-- NUEVO MODULO SINPE -->
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Sinpe" asp-action="Index">
-                                Registrar SINPE
+                                SINPE
+                            </a>
+                        </li>
+
+                        <!-- NUEVO -->
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="ConfiguracionComercio" asp-action="Index">
+                                Configuración
+                            </a>
+                        </li>
+
+                        <!-- NUEVO -->
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Reportes" asp-action="Index">
+                                Reportes
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Usuarios" asp-action="Index">
+                                Usuarios
                             </a>
                         </li>
 
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Bitacora" asp-action="Index">
                                 Bitácora
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Usuarios" asp-action="Index">
-                                Usuarios
                             </a>
                         </li>
 
@@ -98,13 +112,11 @@
 
         <div class="offcanvas-body">
 
-            <!-- Botón de alto contraste -->
             <button id="alto-contraste" class="btn btn-dark w-100 mb-3"
                     aria-label="Activar modo alto contraste">
                 Alto contraste
             </button>
 
-            <!-- Slide-right para tamaño de letra -->
             <label for="slider-fuente" class="form-label fw-bold">
                 Tamaño de letra
             </label>
@@ -122,7 +134,6 @@
                    aria-valuenow="2"
                    aria-label="Control deslizante para ajustar tamaño de fuente">
 
-            <!-- Marcas discretas -->
             <div class="slider-marks d-flex justify-content-between mt-1 px-1">
                 <span class="mark">A–</span>
                 <span class="mark">A</span>
@@ -133,7 +144,6 @@
         </div>
     </div>
 
-
     <div class="container mt-4">
         @RenderBody()
     </div>
@@ -143,9 +153,9 @@
     </footer>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
-            // Modo alto contraste
-                        document.addEventListener("DOMContentLoaded", function () {
+            document.addEventListener("DOMContentLoaded", function () {
 
                 function mostrarMensajeAccesible(texto) {
                     const mensaje = document.getElementById("mensajeAccesible");
@@ -165,7 +175,7 @@
                         }
                     });
                 }
-            // Tamaño de letra
+
                 const slider = document.getElementById("slider-fuente");
 
                 if (slider) {
@@ -175,19 +185,19 @@
                         switch (slider.value) {
                             case "1":
                                 document.documentElement.style.fontSize = "90%";
-                                mostrarMensajeAccesible("Tamaño de letra pequeño");
+                                mostrarMensajeAccesible("Tamaño pequeño");
                                 break;
                             case "2":
                                 document.documentElement.style.fontSize = "100%";
-                                mostrarMensajeAccesible("Tamaño de letra normal");
+                                mostrarMensajeAccesible("Tamaño normal");
                                 break;
                             case "3":
                                 document.documentElement.style.fontSize = "120%";
-                                mostrarMensajeAccesible("Tamaño de letra grande");
+                                mostrarMensajeAccesible("Tamaño grande");
                                 break;
                             case "4":
                                 document.documentElement.style.fontSize = "140%";
-                                mostrarMensajeAccesible("Tamaño de letra extra grande");
+                                mostrarMensajeAccesible("Tamaño extra grande");
                                 break;
                         }
                     });
@@ -195,27 +205,25 @@
             });
     </script>
 
-    <!-- jQuery - Josue -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script>
-            $(document).ready(function() {
 
-                // Resaltar filas
-                $('table tbody tr').on('mouseenter', function() {
+    <script>
+            $(document).ready(function () {
+
+                $('table tbody tr').on('mouseenter', function () {
                     $(this).css('background-color', '#fff3cd');
-                }).on('mouseleave', function() {
+                }).on('mouseleave', function () {
                     $(this).css('background-color', '');
                 });
 
-                // Hover en botón de accesibilidad
-                $('#btnAccesibilidad').on('mouseenter', function() {
+                $('#btnAccesibilidad').on('mouseenter', function () {
                     $(this).css('transform', 'scale(1.1)');
-                }).on('mouseleave', function() {
+                }).on('mouseleave', function () {
                     $(this).css('transform', 'scale(1)');
                 });
 
             });
     </script>
-
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

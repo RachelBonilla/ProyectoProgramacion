@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Modelos.Models.ConfiguracionComercio>
+
+<h2 class="mb-4">Configuración de Comercios</h2>
+
+<a class="btn btn-primary mb-3" href="/ConfiguracionComercio/Create">
+    Nueva Configuración
+</a>
+
+<table class="table table-bordered table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Comercio</th>
+            <th>Tipo Configuración</th>
+            <th>Comisión (%)</th>
+            <th>Fecha Registro</th>
+            <th>Fecha Modificación</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@(item.Comercio?.Nombre ?? "Sin comercio")</td>
+
+                <td>
+                    @{
+                        string tipo = item.TipoConfiguracion switch
+                        {
+                            1 => "Plataforma",
+                            2 => "Externa",
+                            3 => "Ambas",
+                            _ => "Desconocido"
+                        };
+                    }
+                    @tipo
+                </td>
+
+                <td>@item.Comision %</td>
+
+                <td>
+                    @(item.FechaDeRegistro.ToString("dd/MM/yyyy HH:mm"))
+                </td>
+
+                <td>
+                    @(item.FechaDeModificacion.HasValue
+                        ? item.FechaDeModificacion.Value.ToString("dd/MM/yyyy HH:mm")
+                        : "Sin cambios")
+                </td>
+
+                <td>
+                    @(item.Estado ? "Activo" : "Inactivo")
+                </td>
+
+                <td>
+                    <a class="btn btn-sm btn-warning"
+                           href="/ConfiguracionComercio/Edit/@item.IdConfiguracion">
+                        Editar
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

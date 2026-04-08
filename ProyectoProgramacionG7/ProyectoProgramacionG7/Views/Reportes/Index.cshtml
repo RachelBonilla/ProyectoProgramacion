@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Modelos.Models.ReporteMensual>
+
+<h2>Reportes Mensuales</h2>
+
+<a class="btn btn-success mb-3" href="/Reportes/Generar">
+    Generar Reportes
+</a>
+
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Comercio</th>
+            <th>Cajas</th>
+            <th>Monto Total</th>
+            <th>Cantidad SINPES</th>
+            <th>Comisión</th>
+            <th>Fecha</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Comercio?.Nombre</td>
+                <td>@item.CantidadDeCajas</td>
+                <td>@item.MontoTotalRecaudado</td>
+                <td>@item.CantidadDeSINPES</td>
+                <td>@item.MontoTotalComision</td>
+                <td>@item.FechaDelReporte.ToString("dd/MM/yyyy")</td>
+            </tr>
+        }
+    </tbody>
+</table>
