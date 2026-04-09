@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="Modelos/Modelos.csproj" />
+  <Project Path="ProyectoProgramacionG7.Api/ProyectoProgramacionG7.Api.csproj" Id="fdf77a0f-3fe7-408a-b5f9-c67646c62b9d" />
   <Project Path="ProyectoProgramacionG7/ProyectoProgramacionG7.csproj" />
 </Solution>

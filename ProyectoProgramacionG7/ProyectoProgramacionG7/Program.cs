@@ -8,15 +8,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
+var connectionString = builder.Configuration.GetConnectionString("MysqlConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
-{
-    options.UseMySql(
-        builder.Configuration.GetConnectionString("MysqlConnection"),
-        ServerVersion.AutoDetect(
-            builder.Configuration.GetConnectionString("MysqlConnection")
-        )
-    );
-});
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+);
+
+// builder.Services.AddDbContext<AppDbContext>(options =>
+// {
+//     options.UseMySql(
+//         builder.Configuration.GetConnectionString("MysqlConnection"),
+//         ServerVersion.AutoDetect(
+//             builder.Configuration.GetConnectionString("MysqlConnection")
+//         )
+//     );
+// });
 
 
 // Servicio de Bitácora
