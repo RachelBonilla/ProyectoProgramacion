@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Modelos.Models;
 
-namespace ProyectoProgramacionG7.Data
+namespace ProyectoProgramacionG7.Api.Data
 {
     public class AppDbContext : DbContext
     {
@@ -9,19 +9,19 @@ namespace ProyectoProgramacionG7.Data
         {
         }
 
-        public DbSet<Caja> Cajas { get; set; }
         public DbSet<Comercio> Comercios { get; set; }
-        public DbSet<BitacoraEvento> BitacoraEventos { get; set; }
-        public DbSet<Sinpe> Sinpes { get; set; }
-        public DbSet<ReporteMensual> Reportes { get; set; }
-        public DbSet<ConfiguracionComercio> Configuraciones { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Caja> Cajas { get; set; }
+        public DbSet<Sinpe> Sinpes { get; set; }
+        public DbSet<ConfiguracionComercio> Configuraciones { get; set; }
+        public DbSet<ReporteMensual> Reportes { get; set; }
+        public DbSet<BitacoraEvento> BitacoraEventos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Mapeo a las tablas en MySQL
+            // Mapeo a las tablas reales (prefijo G7_)
             modelBuilder.Entity<Comercio>().ToTable("G7_Comercios");
             modelBuilder.Entity<Usuario>().ToTable("G7_Usuarios");
             modelBuilder.Entity<Caja>().ToTable("G7_Cajas");
@@ -30,7 +30,7 @@ namespace ProyectoProgramacionG7.Data
             modelBuilder.Entity<ReporteMensual>().ToTable("G7_ReportesMensuales");
             modelBuilder.Entity<BitacoraEvento>().ToTable("G7_Bitacora");
 
-
+            // Relaciones
             modelBuilder.Entity<Caja>()
                 .HasOne(c => c.Comercio)
                 .WithMany()
@@ -43,18 +43,23 @@ namespace ProyectoProgramacionG7.Data
                 .HasForeignKey(s => s.CajaId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Usuario>()
+                .HasOne(u => u.Comercio)
+                .WithMany()
+                .HasForeignKey(u => u.IdComercio)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<ConfiguracionComercio>()
                 .HasOne(c => c.Comercio)
                 .WithMany()
                 .HasForeignKey(c => c.IdComercio)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Caja>(entity =>
-            {
-                entity.Property(e => e.Nombre).IsRequired(false);
-                entity.Property(e => e.Descripcion).IsRequired(false);
-                entity.Property(e => e.TelefonoSINPE).IsRequired(false);
-            });
+            modelBuilder.Entity<ReporteMensual>()
+                .HasOne(r => r.Comercio)
+                .WithMany()
+                .HasForeignKey(r => r.IdComercio)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
