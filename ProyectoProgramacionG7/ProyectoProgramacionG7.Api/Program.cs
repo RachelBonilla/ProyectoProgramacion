@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ProyectoProgramacionG7.Api.Data;
+using ProyectoProgramacionG7.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,9 @@ var connectionString = builder.Configuration.GetConnectionString("MysqlConnectio
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
 );
+
+// Servicio de Bitácora
+builder.Services.AddScoped<IBitacoraService, BitacoraService>();
 
 var app = builder.Build();
 
