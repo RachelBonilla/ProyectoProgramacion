@@ -20,14 +20,14 @@ namespace ProyectoProgramacionG7.Api.Controllers
             _bitacora = bitacora;
         }
 
-        // GET: api/Comercios
+        // GET
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Comercio>>> GetComercios()
         {
             return await _context.Comercios.ToListAsync();
         }
 
-        // GET: api/Comercios/5
+        // GET
         [HttpGet("{id}")]
         public async Task<ActionResult<Comercio>> GetComercio(int id)
         {
@@ -39,7 +39,7 @@ namespace ProyectoProgramacionG7.Api.Controllers
             return comercio;
         }
 
-        // POST: api/Comercios
+        // POST
         [HttpPost]
         public async Task<ActionResult<Comercio>> PostComercio(Comercio comercio)
         {
@@ -88,7 +88,7 @@ namespace ProyectoProgramacionG7.Api.Controllers
             }
         }
 
-        // PUT: api/Comercios/5
+        // PUT
         [HttpPut("{id}")]
         public async Task<IActionResult> PutComercio(int id, Comercio comercio)
         {
@@ -141,7 +141,7 @@ namespace ProyectoProgramacionG7.Api.Controllers
             }
         }
 
-        // DELETE: api/Comercios/5
+        // DELETE
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteComercio(int id)
         {

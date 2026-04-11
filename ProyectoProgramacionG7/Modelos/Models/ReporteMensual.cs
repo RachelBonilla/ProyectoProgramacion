@@ -12,7 +12,7 @@ namespace Modelos.Models
         [ForeignKey("Comercio")]
         public int IdComercio { get; set; }
 
-        public Comercio Comercio { get; set; }
+        public Comercio? Comercio { get; set; }
 
         [Required]
         public int CantidadDeCajas { get; set; }

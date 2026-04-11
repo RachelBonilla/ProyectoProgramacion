@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+
 namespace Modelos.Models
 {
     public class Usuario
@@ -10,7 +11,7 @@ namespace Modelos.Models
 
         [ForeignKey("Comercio")]
         public int? IdComercio { get; set; }
-        public Comercio Comercio { get; set; }
+        public Comercio? Comercio { get; set; }
 
         public Guid? IdNetUser { get; set; }
 
