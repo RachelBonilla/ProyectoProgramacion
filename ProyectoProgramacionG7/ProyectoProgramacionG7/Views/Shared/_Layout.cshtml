@@ -58,14 +58,12 @@
                             </a>
                         </li>
 
-                        <!-- NUEVO -->
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="ConfiguracionComercio" asp-action="Index">
                                 Configuración
                             </a>
                         </li>
 
-                        <!-- NUEVO -->
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Reportes" asp-action="Index">
                                 Reportes
@@ -87,6 +85,25 @@
                     </ul>
 
                     <ul class="navbar-nav ms-auto">
+
+                        <li class="nav-item">
+                            @if (User.Identity != null && User.Identity.IsAuthenticated)
+                            {
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-outline-light me-2">
+                                        Cerrar Sesión
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <a class="nav-link" asp-controller="Account" asp-action="Login">
+                                    Iniciar Sesión
+                                </a>
+                            }
+                        </li>
+
                         <li class="nav-item">
                             <button id="btnAccesibilidad" class="btn btn-outline-dark rounded-pill px-3"
                                     data-bs-toggle="offcanvas"
@@ -155,74 +172,74 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-            document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
 
-                function mostrarMensajeAccesible(texto) {
-                    const mensaje = document.getElementById("mensajeAccesible");
-                    mensaje.textContent = texto;
-                }
+            function mostrarMensajeAccesible(texto) {
+                const mensaje = document.getElementById("mensajeAccesible");
+                mensaje.textContent = texto;
+            }
 
-                const btnContraste = document.getElementById("alto-contraste");
+            const btnContraste = document.getElementById("alto-contraste");
 
-                if (btnContraste) {
-                    btnContraste.addEventListener("click", function () {
-                        document.body.classList.toggle("alto-contraste");
+            if (btnContraste) {
+                btnContraste.addEventListener("click", function() {
+                    document.body.classList.toggle("alto-contraste");
 
-                        if (document.body.classList.contains("alto-contraste")) {
-                            mostrarMensajeAccesible("Modo alto contraste activado");
-                        } else {
-                            mostrarMensajeAccesible("Modo alto contraste desactivado");
-                        }
-                    });
-                }
+                    if (document.body.classList.contains("alto-contraste")) {
+                        mostrarMensajeAccesible("Modo alto contraste activado");
+                    } else {
+                        mostrarMensajeAccesible("Modo alto contraste desactivado");
+                    }
+                });
+            }
 
-                const slider = document.getElementById("slider-fuente");
+            const slider = document.getElementById("slider-fuente");
 
-                if (slider) {
-                    slider.addEventListener("input", function () {
-                        slider.setAttribute("aria-valuenow", slider.value);
+            if (slider) {
+                slider.addEventListener("input", function() {
+                    slider.setAttribute("aria-valuenow", slider.value);
 
-                        switch (slider.value) {
-                            case "1":
-                                document.documentElement.style.fontSize = "90%";
-                                mostrarMensajeAccesible("Tamaño pequeño");
-                                break;
-                            case "2":
-                                document.documentElement.style.fontSize = "100%";
-                                mostrarMensajeAccesible("Tamaño normal");
-                                break;
-                            case "3":
-                                document.documentElement.style.fontSize = "120%";
-                                mostrarMensajeAccesible("Tamaño grande");
-                                break;
-                            case "4":
-                                document.documentElement.style.fontSize = "140%";
-                                mostrarMensajeAccesible("Tamaño extra grande");
-                                break;
-                        }
-                    });
-                }
-            });
+                    switch (slider.value) {
+                        case "1":
+                            document.documentElement.style.fontSize = "90%";
+                            mostrarMensajeAccesible("Tamaño pequeño");
+                            break;
+                        case "2":
+                            document.documentElement.style.fontSize = "100%";
+                            mostrarMensajeAccesible("Tamaño normal");
+                            break;
+                        case "3":
+                            document.documentElement.style.fontSize = "120%";
+                            mostrarMensajeAccesible("Tamaño grande");
+                            break;
+                        case "4":
+                            document.documentElement.style.fontSize = "140%";
+                            mostrarMensajeAccesible("Tamaño extra grande");
+                            break;
+                    }
+                });
+            }
+        });
     </script>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
     <script>
-            $(document).ready(function () {
+        $(document).ready(function() {
 
-                $('table tbody tr').on('mouseenter', function () {
-                    $(this).css('background-color', '#fff3cd');
-                }).on('mouseleave', function () {
-                    $(this).css('background-color', '');
-                });
-
-                $('#btnAccesibilidad').on('mouseenter', function () {
-                    $(this).css('transform', 'scale(1.1)');
-                }).on('mouseleave', function () {
-                    $(this).css('transform', 'scale(1)');
-                });
-
+            $('table tbody tr').on('mouseenter', function() {
+                $(this).css('background-color', '#fff3cd');
+            }).on('mouseleave', function() {
+                $(this).css('background-color', '');
             });
+
+            $('#btnAccesibilidad').on('mouseenter', function() {
+                $(this).css('transform', 'scale(1.1)');
+            }).on('mouseleave', function() {
+                $(this).css('transform', 'scale(1)');
+            });
+
+        });
     </script>
     @RenderSection("Scripts", required: false)
 </body>

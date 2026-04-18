@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Modelos.Models;
 using ProyectoProgramacionG7.Data;
@@ -7,6 +8,8 @@ using System.Text.Json;
 
 namespace ProyectoProgramacionG7.Controllers
 {
+
+    [Authorize]
     public class ComercioController : Controller
     {
         private readonly AppDbContext _context;

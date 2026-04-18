@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProyectoProgramacionG7.Data;
 
 namespace ProyectoProgramacionG7.Controllers
 {
+    [Authorize]
     public class BitacoraController : Controller
     {
         private readonly AppDbContext _context;
