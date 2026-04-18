@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Modelos.Models;
 
 namespace ProyectoProgramacionG7.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -20,6 +21,15 @@ namespace ProyectoProgramacionG7.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // Mapeo de tablas Identity
+            modelBuilder.Entity<Microsoft.AspNetCore.Identity.IdentityUser>().ToTable("G7_AspNetUsers");
+            modelBuilder.Entity<Microsoft.AspNetCore.Identity.IdentityRole>().ToTable("G7_AspNetRoles");
+            modelBuilder.Entity<Microsoft.AspNetCore.Identity.IdentityUserRole<string>>().ToTable("G7_AspNetUserRoles");
+            modelBuilder.Entity<Microsoft.AspNetCore.Identity.IdentityUserClaim<string>>().ToTable("G7_AspNetUserClaims");
+            modelBuilder.Entity<Microsoft.AspNetCore.Identity.IdentityUserLogin<string>>().ToTable("G7_AspNetUserLogins");
+            modelBuilder.Entity<Microsoft.AspNetCore.Identity.IdentityUserToken<string>>().ToTable("G7_AspNetUserTokens");
+            modelBuilder.Entity<Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>>().ToTable("G7_AspNetRoleClaims");
 
             // Mapeo a las tablas en MySQL
             modelBuilder.Entity<Comercio>().ToTable("G7_Comercios");
