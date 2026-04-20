@@ -6,7 +6,7 @@ using ProyectoProgramacionG7.Data;
 
 namespace ProyectoProgramacionG7.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrador")]
     public class ReportesController : Controller
     {
         private readonly AppDbContext _context;

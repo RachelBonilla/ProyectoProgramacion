@@ -17,7 +17,6 @@
             <th>Acciones</th>
         </tr>
     </thead>
-
     <tbody>
         @foreach (var item in Model)
         {
@@ -27,18 +26,18 @@
                 <td>@item.SegundoApellido</td>
                 <td>@item.Identificacion</td>
                 <td>@item.CorreoElectronico</td>
-
                 <td>
                     @(item.FechaDeRegistro.ToString("dd/MM/yyyy"))
                 </td>
-
                 <td>
                     @(item.Estado ? "Activo" : "Inactivo")
                 </td>
-
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.IdUsuario" class="btn btn-warning btn-sm">
                         Editar
+                    </a>
+                    <a href="/Account/Registro?correo=@item.CorreoElectronico" class="btn btn-info btn-sm">
+                        Crear Acceso
                     </a>
                 </td>
             </tr>

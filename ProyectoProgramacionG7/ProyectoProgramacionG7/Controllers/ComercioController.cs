@@ -9,7 +9,7 @@ using System.Text.Json;
 namespace ProyectoProgramacionG7.Controllers
 {
 
-    [Authorize]
+    [Authorize(Roles = "Administrador")]
     public class ComercioController : Controller
     {
         private readonly AppDbContext _context;

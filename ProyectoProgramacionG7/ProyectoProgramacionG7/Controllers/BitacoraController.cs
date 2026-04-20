@@ -5,7 +5,7 @@ using ProyectoProgramacionG7.Data;
 
 namespace ProyectoProgramacionG7.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrador")]
     public class BitacoraController : Controller
     {
         private readonly AppDbContext _context;

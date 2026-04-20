@@ -50,9 +50,13 @@ namespace ProyectoProgramacionG7.Controllers
         }
 
         // GET: /Account/Registro
-        public IActionResult Registro()
+        public IActionResult Registro(string? correo = null)
         {
-            return View();
+            var model = new RegistroViewModel
+            {
+                Correo = correo ?? ""
+            };
+            return View(model);
         }
 
         // POST: /Account/Registro
