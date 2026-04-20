@@ -4,7 +4,10 @@
 
 ### | Administrador | admin@patitos.com | 123456 |
 
-### | Cajero | cajero@patitos.com | 123456 |Integrantes
+| Cajero | cajero@patitos.com | 123456
+| Cajero\_1 | cajero\_1@patitos.com | 123456
+|Integrantes
+---
 
 
 
