@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Modelos.Models;
 using ProyectoProgramacionG7.Api.Data;
@@ -45,9 +46,9 @@ namespace ProyectoProgramacionG7.Api.Controllers
             return sinpe;
         }
 
-        
+
         // GET SINPE POR TELÉFONO DE CAJA
-        
+        [Authorize] 
         [HttpGet("Consultar/{telefonoCaja}")]
         public async Task<ActionResult<IEnumerable<object>>> ConsultarSinpes(string telefonoCaja)
         {
@@ -92,6 +93,7 @@ namespace ProyectoProgramacionG7.Api.Controllers
         }
 
         // PUT-SINPE PARA SINCRONIZAR DESDE SISTEMA EXTERNO
+        [Authorize]
         [HttpPut("Sincronizar/{idSinpe}")]
         public async Task<ActionResult<ApiResponse>> SincronizarSinpe(int idSinpe)
         {
@@ -157,6 +159,7 @@ namespace ProyectoProgramacionG7.Api.Controllers
         }
 
         // POST Recibir
+        [Authorize]
         [HttpPost("Recibir")]
         public async Task<ActionResult<ApiResponse>> RecibirSinpe(Sinpe sinpe)
         {

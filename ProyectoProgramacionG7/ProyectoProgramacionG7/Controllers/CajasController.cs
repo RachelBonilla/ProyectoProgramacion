@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Modelos.Models;
 using ProyectoProgramacionG7.Data;
@@ -7,24 +9,41 @@ using System.Text.Json;
 
 namespace ProyectoProgramacionG7.Controllers
 {
+    [Authorize(Roles = "Administrador,Cajero")]
     public class CajasController : Controller
     {
         private readonly AppDbContext _context;
         private readonly IBitacoraService _bitacora;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public CajasController(AppDbContext context, IBitacoraService bitacora)
+        public CajasController(AppDbContext context, IBitacoraService bitacora, UserManager<IdentityUser> userManager)
         {
             _context = context;
             _bitacora = bitacora;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index(int? comercioId)
         {
+            var usuario = await _userManager.GetUserAsync(User);
+            var roles = await _userManager.GetRolesAsync(usuario!);
+            var esCajero = roles.Contains("Cajero");
+
             var cajas = _context.Cajas
                 .Include(c => c.Comercio)
                 .AsQueryable();
 
-            if (comercioId != null)
+            if (esCajero)
+            {
+                var usuarioG7 = _context.Usuarios
+                    .FirstOrDefault(u => u.CorreoElectronico == usuario!.Email);
+
+                if (usuarioG7 == null)
+                    return View(new List<Caja>());
+
+                cajas = cajas.Where(c => c.IdComercio == usuarioG7.IdComercio);
+            }
+            else if (comercioId != null)
             {
                 cajas = cajas.Where(c => c.IdComercio == comercioId);
             }

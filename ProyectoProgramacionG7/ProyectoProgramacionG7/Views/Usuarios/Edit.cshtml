@@ -3,8 +3,19 @@
 <h2>Editar Usuario</h2>
 
 <form asp-action="Edit" method="post">
-
     <input type="hidden" asp-for="IdUsuario" />
+    <input type="hidden" asp-for="FechaDeRegistro" />
+
+    <div class="form-group">
+        <label>Comercio</label>
+        <select asp-for="IdComercio" class="form-control">
+            <option value="">-- Seleccione un comercio --</option>
+            @foreach (var c in ViewBag.Comercios)
+            {
+                <option value="@c.IdComercio">@c.Nombre</option>
+            }
+        </select>
+    </div>
 
     <div class="form-group">
         <label>Nombres</label>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Modelos.Models;
@@ -8,6 +9,7 @@ using System.Text.Json;
 
 namespace ProyectoProgramacionG7.Controllers
 {
+    [Authorize(Roles = "Administrador")]
     public class UsuariosController : Controller
     {
         private readonly AppDbContext _context;
@@ -84,7 +86,7 @@ namespace ProyectoProgramacionG7.Controllers
                 );
             }
 
-            ViewBag.Comercios = new SelectList(_context.Comercios, "IdComercio", "Nombre");
+            ViewBag.Comercios = _context.Comercios.ToList();
             return View(usuario);
         }
 
@@ -95,7 +97,7 @@ namespace ProyectoProgramacionG7.Controllers
             if (usuario == null)
                 return NotFound();
 
-            ViewBag.Comercios = new SelectList(_context.Comercios, "IdComercio", "Nombre");
+            ViewBag.Comercios = _context.Comercios.ToList();
 
             return View(usuario);
         }
@@ -110,7 +112,7 @@ namespace ProyectoProgramacionG7.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    ViewBag.Comercios = new SelectList(_context.Comercios, "IdComercio", "Nombre", usuario.IdComercio);
+                    ViewBag.Comercios = _context.Comercios.ToList();
                     return View(usuario);
                 }
 
@@ -150,7 +152,7 @@ namespace ProyectoProgramacionG7.Controllers
                 );
             }
 
-            ViewBag.Comercios = new SelectList(_context.Comercios, "IdComercio", "Nombre", usuario.IdComercio);
+            ViewBag.Comercios = _context.Comercios.ToList();
             return View(usuario);
         }
     }
